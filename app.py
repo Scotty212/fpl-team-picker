@@ -68,15 +68,32 @@ for player in regulars_p:
     squad[player['position']].append(player)
 
 def top_3(position):
+    print(f"\nTop 3: {position} \n")
+    print_players(get_top(position, 3))
+
+def get_top(position, n):
+    result = []
     if position in squad:
-        print(f"\nTop 3: {position} \n")
-        for player in squad[position][:3]:
-            print(f"{player['name']}, Score: {player['score']:.2f}, Value: {player['value']:.2f}")
-    else:
-        print(f"Position '{position}' not found in squad.")
+        for player in squad[position][:n]:
+            result.append(player)
+    return result
 
-for position in squad:
-   (top_3(position))
+def print_players(player_list):
+    for player in player_list:
+        print(f"{player['name']}, Score: {player['score']:.2f}, Value: {player['value']:.2f}")
+
+def get_player(name):
+    for player in all_players:
+        if player['name'] == name:
+            return (f"{player['name']}, Score: {player['score']:.2f}, Value: {player['value']:.2f}")
+    return 'Player not found'
+
+            
+        
 
 
-   
+
+# print_players(get_top('Defender', 5))
+
+# for position in squad:
+#     top_3(position)exit()
