@@ -11,32 +11,49 @@ r = requests.get(base_url + "bootstrap-static/").json()
 players = r['elements']
 teams = r['teams']
 
+counter = 0
+
+for game in r['events']:
+    if game['finished'] or game['is_current']:
+        counter += 1
+
+positions = { 
+    1:'Goalkeeper',
+    2:'Defender',
+    3:'Midfielder',
+    4: 'Attacker'
+}
+
 all_players = []
 
 for i in players:
+    price = i['now_cost'] / 10
+    value = i['total_points'] / price
+
+    if counter > 0:
+        starts_frac = i['starts'] / counter
+    else:
+        starts_frac = 0
+    
+    score = float(i['form']) * starts_frac
+
     all_players.append({
+        'price': price,
+        'value': value,
+        'starts_frac': starts_frac,
+        'score': score,
         'name': f"{i['first_name']} {i['second_name']}",
-        'price': i['now_cost'] / 10,
         'points': i['total_points'],
         'goals_scored': i['goals_scored'],
         'minutes': i['minutes'],
-        'position': i['element_type'],
+        'position': positions[i['element_type']],
         'form': float(i['form']) ,
         'starts': i["starts"]
     }) 
 
-for player in all_players:
-    if player['position'] == 1:
-        player['position'] = 'Goalkeeper'
-    elif player['position'] == 2:
-        player['position'] = 'Defender'
-    elif player['position'] == 3:
-        player['position'] = 'Midfielder'
-    else:
-        player['position'] = 'Attacker'
-
-for player in all_players:
-    player['value'] = player['points'] / player['price']
+for game in (r['events']):
+    if game['finished'] or game['is_current']:
+        counter += 1
 
 squad = {
     'Goalkeeper': [],
@@ -44,22 +61,6 @@ squad = {
     'Midfielder': [],
     'Attacker': [] 
 }
-
-counter = 0
-
-for game in (r['events']):
-    if game['finished'] or game['is_current']:
-        counter += 1
-
-
-for player in all_players:
-    if counter > 0:
-        player['starts_frac'] = player['starts'] / counter
-    else:
-        player['starts_frac'] = 0
-
-for player in all_players:
-    player['score'] = player['form'] * player['starts_frac']
 
 regulars_p = [p for p in all_players if p['minutes'] >= 270]
 regulars_p.sort(key=lambda p: p['score'], reverse=True)
@@ -96,4 +97,4 @@ def get_player(name):
 # print_players(get_top('Defender', 5))
 
 # for position in squad:
-#     top_3(position)exit()
+#     top_3(position)
