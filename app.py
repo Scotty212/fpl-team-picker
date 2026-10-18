@@ -1,5 +1,4 @@
 import requests, json
-from pprint import pprint
 
 # base url for all FPL API endpoints
 base_url = "https://fantasy.premierleague.com/api/"
@@ -21,7 +20,7 @@ positions = {
     1:'Goalkeeper',
     2:'Defender',
     3:'Midfielder',
-    4: 'Attacker'
+    4:'Attacker'
 }
 
 all_players = []
@@ -51,10 +50,6 @@ for i in players:
         'starts': i["starts"]
     }) 
 
-for game in (r['events']):
-    if game['finished'] or game['is_current']:
-        counter += 1
-
 squad = {
     'Goalkeeper': [],
     'Defender': [],
@@ -73,11 +68,20 @@ def top_3(position):
     print_players(get_top(position, 3))
 
 def get_top(position, n):
-    result = []
     if position in squad:
-        for player in squad[position][:n]:
-            result.append(player)
-    return result
+        return squad[position][:n]
+    return []
+
+
+
+# check the position is in squad
+# if it is, return the slice
+# if it isn’t, return something sensible (an empty list is a good choice)
+
+
+
+
+
 
 def print_players(player_list):
     for player in player_list:
@@ -90,7 +94,7 @@ def get_player(name):
     return 'Player not found'
 
             
-        
+    
 
 
 
