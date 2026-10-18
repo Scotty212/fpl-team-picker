@@ -10,6 +10,11 @@ r = requests.get(base_url + "bootstrap-static/").json()
 players = r['elements']
 teams = r['teams']
 
+clubs = {}
+
+for i in teams:
+    clubs[i['id']] = i['name']
+
 counter = 0
 
 for game in r['events']:
@@ -47,8 +52,12 @@ for i in players:
         'minutes': i['minutes'],
         'position': positions[i['element_type']],
         'form': float(i['form']) ,
-        'starts': i["starts"]
-    }) 
+        'starts': i["starts"],
+        'team_id': i['team'],
+        'team': clubs[i['team']],
+        }) 
+
+print(all_players[1])
 
 squad = {
     'Goalkeeper': [],
@@ -72,17 +81,6 @@ def get_top(position, n):
         return squad[position][:n]
     return []
 
-
-
-# check the position is in squad
-# if it is, return the slice
-# if it isn’t, return something sensible (an empty list is a good choice)
-
-
-
-
-
-
 def print_players(player_list):
     for player in player_list:
         print(f"{player['name']}, Score: {player['score']:.2f}, Value: {player['value']:.2f}")
@@ -90,15 +88,21 @@ def print_players(player_list):
 def get_player(name):
     for player in all_players:
         if player['name'] == name:
-            return (f"{player['name']}, Score: {player['score']:.2f}, Value: {player['value']:.2f}")
+            return (f"{player['name']}, Score: {player['score']:.2f}, Value: {player['value']:.2f}, Club: {player['team']}")
     return 'Player not found'
 
-            
-    
 
 
 
-# print_players(get_top('Defender', 5))
 
-# for position in squad:
-#     top_3(position)
+
+# 1. Create an empty list, 2. For loop 
+
+
+# Then Phase 4. No code yet. Write comments at the bottom of your file explaining, in plain English, how you’d pick 15 players under these rules:
+
+# 2 GK, 5 DEF, 5 MID, 3 FWD
+# £100m total
+# maximum 3 from any one club
+
+# Start by printing one raw player from the API with players[0] and look for which key tells you their club. Send me the plan when you’ve got it.
