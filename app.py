@@ -57,7 +57,7 @@ for i in players:
         'team': clubs[i['team']],
         }) 
 
-print(all_players[1])
+
 
 squad = {
     'Goalkeeper': [],
@@ -93,16 +93,25 @@ def get_player(name):
 
 
 
+team_alg = {
+    'Goalkeeper': 2,
+    'Defender': 5,
+    'Midfielder': 5,
+    'Attacker': 3,
+    'budget': 100
+}
+
+picks = []
+
+# for player in regulars_p:
+#     if player['score'] >= 5 and team_alg[player['position']] > 0 and picks[player['club']] < 3:
+#         picks.append(player)
+#         team_alg['budget'] -= player['price']
+#         team_alg[player['position']] -= 1
 
 
 
-# 1. Create an empty list, 2. For loop 
+
+print(len(picks))
 
 
-# Then Phase 4. No code yet. Write comments at the bottom of your file explaining, in plain English, how you’d pick 15 players under these rules:
-
-# 2 GK, 5 DEF, 5 MID, 3 FWD
-# £100m total
-# maximum 3 from any one club
-
-# Start by printing one raw player from the API with players[0] and look for which key tells you their club. Send me the plan when you’ve got it.
