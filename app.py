@@ -101,17 +101,30 @@ team_alg = {
     'budget': 100
 }
 
+club_count = {}
+
 picks = []
 
-# for player in regulars_p:
-#     if player['score'] >= 5 and team_alg[player['position']] > 0 and picks[player['club']] < 3:
-#         picks.append(player)
-#         team_alg['budget'] -= player['price']
-#         team_alg[player['position']] -= 1
+for player in regulars_p:
+    if team_alg[player['position']] == 0 or player['price'] > team_alg['budget'] or club_count.get(player['team_id'], 0) >= 3:
+        continue
+    picks.append(player)
+    team_alg[player['position']] -= 1
+    team_alg['budget'] -= player['price']
+    club_count[player['team_id']] = club_count.get(player['team_id'], 0) + 1
+    if len(picks) == 15:
+        break
+    
 
+    
+    # 1. position full? → continue
+    # 2. can't afford? → continue
+    # 3. club has 3? → continue
+    # 4. add player + update tallies
+    # 5. 15 picked? → break
 
+for i in picks:
+    print(i['name'])
 
-
-print(len(picks))
-
+print(team_alg['budget'])
 
