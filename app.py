@@ -4,7 +4,11 @@ import requests
 base_url = "https://fantasy.premierleague.com/api/"
 
 # get data from bootstrap-static endpoint
-r = requests.get(base_url + "bootstrap-static/").json()
+try:
+    r = requests.get(base_url + "bootstrap-static/").json()
+except Exception:
+    print("Couldn't get data from API")
+    raise SystemExit
 
 # get player data
 players = r['elements']
@@ -136,4 +140,3 @@ for player in regulars_p:
     if my_squad.can_add(player):
         my_squad.add(player)
 
-print_squad(my_squad.picks)
