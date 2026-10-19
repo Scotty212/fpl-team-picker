@@ -118,9 +118,22 @@ for player in regulars_p:
 
 
 def print_squad(player_list):
+    for pos in positions.values():       
+        print(pos)
+        for i in player_list:
+            if i['position'] == pos:
+                print(f"  {i['name']}, club: {i['team']}, price: £{i['price']:.1f}m")
+
+    money = 100
     for i in player_list:
-        print(f"{i['name']}, club: {i['team']}, price: {i['price']}.1f")
+        money -= i['price']
+    print(f" Remaining budget: £{money:.1f}m")
+
+                
 
 
-print_squad([picks])
 
+print_squad(picks)
+
+
+        
