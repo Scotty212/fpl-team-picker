@@ -116,15 +116,11 @@ for player in regulars_p:
         break
     
 
-    
-    # 1. position full? → continue
-    # 2. can't afford? → continue
-    # 3. club has 3? → continue
-    # 4. add player + update tallies
-    # 5. 15 picked? → break
 
-for i in picks:
-    print(i['name'])
+def print_squad(player_list):
+    for i in player_list:
+        print(f"{i['name']}, club: {i['team']}, price: {i['price']}.1f")
 
-print(team_alg['budget'])
+
+print_squad([picks])
 
