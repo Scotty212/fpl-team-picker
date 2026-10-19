@@ -1,4 +1,4 @@
-import requests, json
+import requests
 
 # base url for all FPL API endpoints
 base_url = "https://fantasy.premierleague.com/api/"
@@ -15,11 +15,11 @@ clubs = {}
 for i in teams:
     clubs[i['id']] = i['name']
 
-counter = 0
+games = 0
 
 for game in r['events']:
     if game['finished'] or game['is_current']:
-        counter += 1
+        games += 1
 
 positions = { 
     1:'Goalkeeper',
@@ -34,8 +34,8 @@ for i in players:
     price = i['now_cost'] / 10
     value = i['total_points'] / price
 
-    if counter > 0:
-        starts_frac = i['starts'] / counter
+    if games > 0:
+        starts_frac = i['starts'] / games
     else:
         starts_frac = 0
     
@@ -57,8 +57,6 @@ for i in players:
         'team': clubs[i['team']],
         }) 
 
-
-
 squad = {
     'Goalkeeper': [],
     'Defender': [],
@@ -66,7 +64,7 @@ squad = {
     'Attacker': [] 
 }
 
-regulars_p = [p for p in all_players if p['minutes'] >= 270]
+regulars_p = [p for p in all_players if p['starts_frac'] >= 0.5]
 regulars_p.sort(key=lambda p: p['score'], reverse=True)
 
 for player in regulars_p:
@@ -128,12 +126,5 @@ def print_squad(player_list):
     for i in player_list:
         money -= i['price']
     print(f" Remaining budget: £{money:.1f}m")
-
-                
-
-
-
-print_squad(picks)
-
 
         
