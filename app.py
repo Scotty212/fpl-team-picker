@@ -89,32 +89,6 @@ def get_player(name):
             return (f"{player['name']}, Score: {player['score']:.2f}, Value: {player['value']:.2f}, Club: {player['team']}")
     return 'Player not found'
 
-
-
-team_alg = {
-    'Goalkeeper': 2,
-    'Defender': 5,
-    'Midfielder': 5,
-    'Attacker': 3,
-    'budget': 100
-}
-
-club_count = {}
-
-picks = []
-
-for player in regulars_p:
-    if team_alg[player['position']] == 0 or player['price'] > team_alg['budget'] or club_count.get(player['team_id'], 0) >= 3:
-        continue
-    picks.append(player)
-    team_alg[player['position']] -= 1
-    team_alg['budget'] -= player['price']
-    club_count[player['team_id']] = club_count.get(player['team_id'], 0) + 1
-    if len(picks) == 15:
-        break
-    
-
-
 def print_squad(player_list):
     for pos in positions.values():       
         print(pos)
@@ -127,4 +101,39 @@ def print_squad(player_list):
         money -= i['price']
     print(f" Remaining budget: £{money:.1f}m")
 
+class Squad:
+    def __init__(self):
+        self.picks = []
+
+        self.slots = {
+            'Goalkeeper': 2,
+            'Defender': 5,
+            'Midfielder': 5,
+            'Attacker': 3}
+
+        self.budget = 100
+        self.club_count = {}
+
+    def can_add(self, player):
+        if self.slots[player['position']] == 0:
+            return False
+        if self.budget < player['price']:
+            return False
+        if self.club_count.get(player['team_id'], 0) >= 3:
+            return False
+        else:
+            return True
         
+    def add(self, player):  
+        self.picks.append(player)
+        self.slots[player['position']] -= 1
+        self.budget -= player['price']
+        self.club_count[player['team_id']] = self.club_count.get(player['team_id'], 0) + 1
+
+my_squad = Squad()
+
+for player in regulars_p:
+    if my_squad.can_add(player):
+        my_squad.add(player)
+
+print_squad(my_squad.picks)
