@@ -93,18 +93,6 @@ def get_player(name):
             return (f"{player['name']}, Score: {player['score']:.2f}, Value: {player['value']:.2f}, Club: {player['team']}")
     return 'Player not found'
 
-def print_squad(player_list):
-    for pos in positions.values():       
-        print(pos)
-        for i in player_list:
-            if i['position'] == pos:
-                print(f"  {i['name']}, club: {i['team']}, price: £{i['price']:.1f}m")
-
-    money = 100
-    for i in player_list:
-        money -= i['price']
-    print(f" Remaining budget: £{money:.1f}m")
-
 class Squad:
     def __init__(self):
         self.picks = []
@@ -133,8 +121,19 @@ class Squad:
         self.slots[player['position']] -= 1
         self.budget -= player['price']
         self.club_count[player['team_id']] = self.club_count.get(player['team_id'], 0) + 1
+    
+    def show(self):
+        for pos in positions.values():       
+            print(pos)
+            for i in self.picks:
+                if i['position'] == pos:
+                    print(f"   {i['name']}, price: {i['price']:.1f}m, club: {i['team']}")
+        print(f"\n Remaining budget: £{self.budget:.1f}m")
+
 
 my_squad = Squad()
+
+
 
 for player in regulars_p:
     if my_squad.can_add(player):
