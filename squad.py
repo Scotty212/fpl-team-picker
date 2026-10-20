@@ -30,7 +30,7 @@ class Squad:
         self.club_count[player['team_id']] = self.club_count.get(player['team_id'], 0) + 1
     
     def show(self):
-        for pos in positions.values():       
+        for pos in positions.values():
             print(pos)
             for i in self.picks:
                 if i['position'] == pos:

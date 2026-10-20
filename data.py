@@ -59,6 +59,7 @@ for i in players:
         'starts': i["starts"],
         'team_id': i['team'],
         'team': clubs[i['team']],
+        'assists': i['assists']
         }) 
 
 squad = {
