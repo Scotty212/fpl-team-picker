@@ -5,11 +5,6 @@ import anthropic
 
 load_dotenv()                  
 client = anthropic.Anthropic() 
-s = Squad()
-
-for p in regulars_p:
-    if s.can_add(p):
-        s.add(p)
 
 def build_context():
     text = ""
@@ -51,6 +46,9 @@ def ask_squad(squad, question):
     prompt = f""" Here is the user's FPL squad, which is already legal. Do not suggest changes that break the rules.
 
     context: {context}
+
+    This squad was picked by taking players in order of score (form × starts fraction), subject to FPL rules: 2 GK, 
+    5 DEF, 5 MID, 3 FWD, a £100m budget, and a maximum of 3 players per club.
     
     Answer the question about this squad, Answer using only this data.
     
